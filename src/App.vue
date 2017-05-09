@@ -23,6 +23,10 @@ html{
   font-size:62.5%;
 }
 
+body{
+  background: rgba(0,225,0,.2);
+}
+
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -30,10 +34,11 @@ html{
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 20px;
 
   display:flex;
   flex-direction:column;
+
+  
   
 
 }
