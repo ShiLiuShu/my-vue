@@ -53,14 +53,16 @@
         color:red;
     }
     .main{
+        background:rgb(102,255,204);
         position: fixed;
-        bottom:.2rem;
+        bottom:0;
         right:0;
         left:0;
         display:flex;
         justify-content: space-around;
         width:100%;
         .foot-item{
+            padding:.3rem 0 .2rem 0;
             .item-img{
                 img{
                     height:1.2rem;

@@ -12,10 +12,6 @@ export default {
 
 
 
-
-
-
-
 </script>
 
 <style lang="scss">
@@ -24,7 +20,12 @@ html{
 }
 
 body{
-  background: rgba(0,225,0,.2);
+  padding:0;
+  margin:0;
+  background: rgba(51,0,102,.4);
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
 }
 
 
@@ -33,14 +34,9 @@ body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
 
-  display:flex;
-  flex-direction:column;
-
-  
-  
-
+    height: 20rem;
+    overflow: auto;
 }
 
 
