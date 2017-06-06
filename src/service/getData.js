@@ -1,5 +1,11 @@
 import axios from 'axios'
 
+const setpromise = data => {
+	return new Promise((resolve, reject) => {
+		resolve(data)
+	})
+}
+
 
 //根据关键词搜索图书
 var getSearchBook=(q,tag,start,count)=>{
@@ -23,11 +29,36 @@ var getBookById=_id=>{
 }
 
 var getCnodeTopics=()=>{
-    axios.get('/api/v1/topics',{
+    return axios.get('/api/v1/topics',{
         params:{
             
         }
     });
 }
 
-export {getSearchBook,getCnodeTopics,getBookById}
+
+//获取热映电影信息
+var getHotMovies=locationId=>{
+    //！！！！一定要加return返回promise哦
+    return axios.get('/Showtime/LocationMovies.api',{
+        params:{
+            locationId:locationId
+        }
+    });
+}
+
+//获取正在售票的电影
+var getIsSellingMovies=locationId=>{
+    return axios.get('/PageSubArea/HotPlayMovies.api',{
+        params:{
+            locationId:locationId
+        }
+    });
+}
+
+
+var getHotMoviesP=(id)=>{
+    setpromise(getHotMovies);
+}
+
+export {getSearchBook,getCnodeTopics,getBookById,getHotMovies,getHotMoviesP,getIsSellingMovies}

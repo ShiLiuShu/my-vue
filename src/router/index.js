@@ -1,9 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
-import Home from '../page/home'
+import SearchBook from '../page/searchBook'
 import Child from '../page/homeChild'
 import App from '../App'
+import Time from '../page/mTime'
+import SearchMovie from '../page/searchMovie'
+
+import My from '../page/my'
 
 Vue.use(Router)
 
@@ -14,8 +18,9 @@ export default new Router({
       component: App,
       children:[
         {
-          path:'/home',
-          component:Home
+          path:'/searchBook',
+          component:SearchBook,
+          name:'searchBook'
         },
         {
           path:'/child',
@@ -23,7 +28,22 @@ export default new Router({
         },
         {
           path:'',
-          redirect:'/home'
+          redirect:'/mTime'
+        },
+        {
+          path:'/mTime',
+          component:Time,
+          name:'mTime'
+        },
+        {
+          path:'/searchMovie',
+          component:SearchMovie,
+          name:'searchMovie'
+        },
+        {
+          path:'/my',
+          component:My,
+          name:'my'
         }
       ]
     }

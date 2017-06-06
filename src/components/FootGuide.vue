@@ -4,19 +4,19 @@
             <div class="item-img" >
                 <img src="../images/d_home.png" />
             </div>
-            <div class="item-text">首页</div>
+            <div class="item-text">热映</div>
         </div>
         <div class="foot-item" :class="{active:isActive[1]}" @click="itemClick(1)">
             <div class="item-img">
                 <img src="../images/d_book.png" />
             </div>
-            <div class="item-text">书影音</div>
+            <div class="item-text">搜影</div>
         </div>
         <div class="foot-item" :class="{active:isActive[2]}" @click="itemClick(2)">
             <div class="item-img">
                 <img src="../images/d_radio.png" />
             </div>
-            <div class="item-text">广播</div>
+            <div class="item-text">搜书</div>
         </div>
         <div class="foot-item" :class="{active:isActive[3]}" @click="itemClick(3)">
             <div class="item-img">
@@ -28,20 +28,34 @@
 </template>
 
 <script>
+    import router from '../router'
+    import {mapState} from 'vuex'
+    import store from '../store'
+
     export default{
         data(){
             return{
-                isActive:[true,false,false,false]
+                isActive:[true,false,false,false],
+                guideName:['mTime','searchMovie','searchBook','my']
             }
         },
+        computed: mapState([
+            // 映射 this.count 为 store.state.count
+            'footGuideIndex'
+        ]),
         methods:{
             itemClick(index){
+                this.$store.commit('updateFootGuideIndex',index);
+                router.push({name:this.guideName[index]});
+            }
+        },
+        mounted(){
+
                 //vue检测数组变动
                 for(let index in this.isActive){
                     this.isActive.splice(index, 1, false);
                 }
-                this.isActive.splice(index, 1, true);
-            }
+                this.isActive.splice(this.footGuideIndex, 1, true);
         }
     }
     

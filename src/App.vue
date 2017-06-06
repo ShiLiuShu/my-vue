@@ -34,9 +34,8 @@ body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-
-    height: 20rem;
-    overflow: auto;
+  padding-bottom: 3rem;
+  overflow: auto;
 }
 
 
