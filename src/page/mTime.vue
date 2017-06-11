@@ -7,7 +7,7 @@
             </div>
             <div class="isSellingGallery">
                 <div class="isSellingItem" v-for="item in isSellingTicketMovies">
-                    <div class="item-image">
+                    <div class="item-image" @click="goToMovieDetailPage(item.movieId)"> 
                         <img :src="item.img" />
                     </div>
                     <div class="item-title">
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+    import router from '../router';
     import footGuide from '../components/FootGuide'
     import {getHotMovies,getBookById,getHotMoviesP,getIsSellingMovies} from '../service/getData'
     export default{
@@ -58,6 +59,11 @@
                 }catch(err){
 
                 }
+            },
+            //点击图片进入影片详情页
+            goToMovieDetailPage(movieId){
+                router.push({name:'movieDetail',params:{movieId:movieId}});
+
             }
 
         }

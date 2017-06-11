@@ -6,6 +6,7 @@ import Child from '../page/homeChild'
 import App from '../App'
 import Time from '../page/mTime'
 import SearchMovie from '../page/searchMovie'
+import MovieDetail from '../page/movieDetail'
 
 import My from '../page/my'
 
@@ -44,6 +45,11 @@ export default new Router({
           path:'/my',
           component:My,
           name:'my'
+        },
+        {
+          path:'/movieDetail/:movieId',
+          component:MovieDetail,
+          name:'movieDetail'
         }
       ]
     }

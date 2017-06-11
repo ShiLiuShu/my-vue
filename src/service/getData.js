@@ -56,9 +56,19 @@ var getIsSellingMovies=locationId=>{
     });
 }
 
+//根据id获取电影详细信息
+var getMovieDetailById=(locationId,movieId)=>{
+    return axios.get('/movie/detail.api',{
+        params:{
+            locationId,
+            movieId
+        }
+    });
+}
+
 
 var getHotMoviesP=(id)=>{
     setpromise(getHotMovies);
 }
 
-export {getSearchBook,getCnodeTopics,getBookById,getHotMovies,getHotMoviesP,getIsSellingMovies}
+export {getSearchBook,getCnodeTopics,getBookById,getHotMovies,getHotMoviesP,getIsSellingMovies,getMovieDetailById}
