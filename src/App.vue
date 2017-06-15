@@ -22,7 +22,7 @@ html{
 body{
   padding:0;
   margin:0;
-  background: rgba(51,0,102,.4);
+  background: rgba(0, 0, 0, 0.7);
   display:flex;
   flex-direction:column;
   justify-content: center;

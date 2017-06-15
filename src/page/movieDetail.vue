@@ -1,25 +1,34 @@
 <template>
-    <div class="main">
+    <div class="main" >
+        <div class="bg">
+            <img :src="movieDetail.basic.img" />
+        </div>
         <div class="head"></div>
-        <div class="sampleDetail">
-            <div class="postImg">
-                <img :src="movieDetail.basic.img"/>
+        <div class="movie-all-content">
+            <div class="rate">7.7</div>
+            <div class="movie-float-sample-content">
+                <div class="postImg">
+                    <img :src="movieDetail.basic.img" />
+                </div>
+                <div class="sample-content-text">
+                    <div class="content-text-up">
+                        <div class="up-cn">{{movieDetail.basic.name}}</div>
+                        <div class="up-en">{{movieDetail.basic.nameEn}}</div>
+                    </div>
+                    <div class="content-text-down">
+                        <div class="time">{{movieDetail.basic.mins}}</div>
+                        <div class="type">{{movieTypeStr}}</div>
+                        <div class="playtime">{{movieDetail.basic.releaseDate}}</div>
+                        <div class="tag">
+                            <ul>
+                                <li>中国巨幕</li>
+                                <li>iMax大厅</li> 
+                            </ul>                                                     
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="text">
-                <div class="title">
-                    <p class="cn">{{movieDetail.basic.name}}</p>
-                    <p class="en">{{movieDetail.basic.nameEn}}</p>
-                </div>
-                <div class="time">
-                    {{movieDetail.basic.mins}}
-                </div>
-                <div class="type">
-                    {{movieTypeStr}}
-                </div>
-                <div class="story">
-                    {{movieDetail.basic.story}}
-                </div>
-            </div>
+            <div class="blank"></div>
         </div>
     </div>
 </template>
@@ -61,53 +70,98 @@
 </script>
 
 <style lang="scss" scoped>
-    $standFontSize:.3rem;
-
+    $imgHeight:8rem;
+    $side-margin-left:.4rem;
+    // :style="{background:'url('+movieDetail.basic.img+')'+ ' no-repeat 0 0'+'/100% 100%'}"
     div.main{
-        padding:.5rem;
-    }
-
-    div.head{
-        background-color: gray;
-        height:2rem;
-    }
-
-    div.sampleDetail{
-        display: flex;
-        height:5rem;
-        background-color: white;
-        .postImg{
-            height:100%;
+        position: relative;
+        padding:0;
+        margin:0;
+        width:100%;
+        div.bg{
+            position: absolute;
+            top: 0;
+            left:0;
+            bottom:0;
+            right:0;
             img{
-                height:100%;
+                width:100%;
+                filter: blur(30px);
             }
+            z-index: -99;
         }
-        .text{
-            padding-left:.3rem;
-            text-align: left;
+        div.head{
+            height:6rem;
+        }
+        div.rate{
+            position:absolute;
             display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            div.title{
-                p.cn{
-                    margin:0;
-                    padding:0;
-                    font-size:.5rem;
+            top:-.8rem;
+            right:.8rem;
+            width:1.5rem;
+            height:1.5rem;
+            background:green;
+            color:white;
+            justify-content: center;
+            align-items: center;
+            font-size:.6rem;
+        }
+        div.movie-all-content{
+            position: relative;
+            background: white;
+            height:30rem;
+            .blank{
+                height:$imgHeight - 1.9rem;
+                border-bottom: solid .3rem silver;
+            }
+            .movie-float-sample-content{
+                position:absolute;
+                display: flex;
+                top:-2.5rem;
+                left:.5rem;
+                .postImg{
+                    border:solid white .1rem;
+                    img{
+                        height:$imgHeight;
+                    }
                 }
-                p.en{
-                    margin:0;
-                    padding:0;
-                    font-size:$standFontSize;
+                .sample-content-text{
+                    .content-text-up{
+                        height:2.5rem;
+                        margin-left:$side-margin-left;
+                        color:white;
+                        text-align: left;
+                        .up-cn{
+                            font-size: .8rem;
+                        }
+                        .up-en{
+                            font-size:.6rem;
+                        }
+                    }
+                    .content-text-down{
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-around;
+                        color:black;
+                        margin-left:$side-margin-left;
+                        height:$imgHeight - 2.5rem;
+                        div{
+                            text-align: left;
+                            font-size:.6rem;
+                            ul{
+                                margin:0;
+                                padding:0;
+                            }
+                            li{
+                                font-size:.3rem;
+                                display: inline;
+                                list-style: none;
+                                border-radius: .05rem;
+                                border: solid gray .03rem;
+                            }
+                        }
+                    }
                 }
-            }
-            div.time{
-                font-size:$standFontSize;
-            }
-            div.type{
-                font-size:$standFontSize;
-            }
-            div.story{
-                font-size:$standFontSize;
             }
         }
     }
