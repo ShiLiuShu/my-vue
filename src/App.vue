@@ -22,7 +22,6 @@ html{
 body{
   padding:0;
   margin:0;
-  background: rgba(0, 0, 0, 0.7);
   display:flex;
   flex-direction:column;
   justify-content: center;
@@ -34,7 +33,7 @@ body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  padding-bottom: 3rem;
+  //padding-bottom: 3rem;
   overflow: auto;
 }
 

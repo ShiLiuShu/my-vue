@@ -4,6 +4,9 @@
             <img :src="movieDetail.basic.img" />
         </div>
         <div class="head"></div>
+        <div class="fixedHead" :style="styleObject">
+            <div class="name">{{movieDetail.basic.name}}</div>
+        </div>
         <div class="movie-all-content">
             <div class="rate">7.7</div>
             <div class="movie-float-sample-content">
@@ -29,6 +32,18 @@
                 </div>
             </div>
             <div class="blank"></div>
+            <!--阴影分割线-->
+            <div class="divder"></div>
+            <!--故事简介-->
+            <div class="sample-story">
+                <div class="text" :class="{'showSampleStoryAll':showSampleStoryAll}">{{movieDetail.basic.story}}</div>
+                <div class="image" :class="{'sampleStoryAllImage':sampleStoryAllImage}" @click="swapSampleStory()">
+                    <img src="../images/arrow.png" />
+                </div>
+            </div>
+            <!--阴影分割线-->
+            <div class="divder"></div>
+            <div class="test" style="height:3000px;background:red"></div>
         </div>
     </div>
 </template>
@@ -40,13 +55,20 @@
             return{
                 movieId:0,
                 movieDetail:'',
-                movieTypeStr:''
+                movieTypeStr:'',
+                showSampleStoryAll:false,
+                sampleStoryAllImage:false,
+                styleObject:{
+                    opacity:0
+                }
             }
         },
         mounted(){
             this.movieId=this.$route.params.movieId;
             console.log(this.$route.params.movieId);
             this.getMovieDetail(290,this.movieId);
+
+            window.addEventListener('scroll',this.handleScroll);
         },
         methods:{
             async getMovieDetail(locationId,movieId){
@@ -64,6 +86,19 @@
                 for(;i<this.movieDetail.basic.type.length;i++){
                     this.movieTypeStr+=this.movieDetail.basic.type[i]+" "
                 }
+            },
+            //切换故事简介
+            swapSampleStory(){
+                this.showSampleStoryAll=!this.showSampleStoryAll;
+                this.sampleStoryAllImage=!this.sampleStoryAllImage;
+            },
+            //处理滚轮事件弹出标题
+            handleScroll(){
+                let y=window.scrollY;
+                let opacity=y/400<=1?y/400:1;
+                console.log(opacity);
+                this.styleObject.opacity=opacity;
+                
             }
         }
     }
@@ -72,6 +107,9 @@
 <style lang="scss" scoped>
     $imgHeight:8rem;
     $side-margin-left:.4rem;
+    $divder-height:.4rem;
+
+    $box-shadow-gray:-2px -.8px 1px 1.5px gray ;
     // :style="{background:'url('+movieDetail.basic.img+')'+ ' no-repeat 0 0'+'/100% 100%'}"
     div.main{
         position: relative;
@@ -86,20 +124,38 @@
             right:0;
             img{
                 width:100%;
+                height:100%;
                 filter: blur(30px);
+                //去掉img下方空隙
+                display: block;
             }
             z-index: -99;
         }
         div.head{
             height:6rem;
         }
+        div.fixedHead{
+            position: fixed;
+            top:0;
+            left:0;
+            right:0;
+            height:3rem;
+            background: darkblue;
+            z-index: 99;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .name{
+
+            }
+        }
         div.rate{
             position:absolute;
             display: flex;
-            top:-.8rem;
+            top:-.3rem;
             right:.8rem;
-            width:1.5rem;
-            height:1.5rem;
+            width:1.0rem;
+            height:1.0rem;
             background:green;
             color:white;
             justify-content: center;
@@ -109,10 +165,13 @@
         div.movie-all-content{
             position: relative;
             background: white;
-            height:30rem;
+            .divder{
+                height:$divder-height;
+                background-color: silver;
+                box-shadow: $box-shadow-gray ;
+            }
             .blank{
                 height:$imgHeight - 1.9rem;
-                border-bottom: solid .3rem silver;
             }
             .movie-float-sample-content{
                 position:absolute;
@@ -162,6 +221,38 @@
                         }
                     }
                 }
+            }
+            div.sample-story{
+                padding:.1rem 0;
+                .text{
+                    height:2.5rem;
+                    font-size:.6rem;
+                    overflow: hidden; 
+                    margin:.6rem .6rem;  
+                }
+
+                .showSampleStoryAll{
+                    height:auto;
+                    font-size:.6rem;
+                }
+
+                .image{
+                    margin-top:.2rem;
+                    height:.5rem;
+                    
+                    img{
+                        margin: 0 auto;
+                        display: block;
+                        height:80%;
+                    }
+                }
+                .sampleStoryAllImage{
+                    img{
+                        transition: all 0.1s;
+                        transform: rotate(180deg);
+                    }
+                }
+
             }
         }
     }
