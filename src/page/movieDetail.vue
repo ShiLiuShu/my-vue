@@ -42,8 +42,35 @@
                 </div>
             </div>
             <!--阴影分割线-->
+            <div class="divder" style="position:relative">
+                <div class="actor-all" style="font-size:.6rem">全部</div>
+            </div>
+            <div class="DirectorAndActor">
+                <div class="director-head">
+                    
+                    <div style="margin-left:.5rem">导演</div>
+                    <div style="margin-left:4rem">主要演员</div>
+                </div>
+                <div class="content">
+                    <div class="director">
+                        <div class="image">
+                            <img :src="director.img" />
+                        </div>
+                        <div class="nameCn">{{director.name}}</div>
+                        <div class="nameEn">{{director.nameEn}}</div>
+                    </div>
+                    <div class="line"></div>
+                    <div class="actor" v-for="actor in actors">
+                        <div class="image">
+                            <img :src="actor.img" />
+                        </div>
+                        <div class="nameCn">{{actor.name}}</div>
+                        <div class="nameEn">{{actor.nameEn}}</div>
+                        <div class="nameEn">饰:{{actor.roleName}}</div>
+                    </div>
+                </div>
+            </div>
             <div class="divder"></div>
-            <div class="test" style="height:3000px;background:red"></div>
         </div>
     </div>
 </template>
@@ -60,7 +87,9 @@
                 sampleStoryAllImage:false,
                 styleObject:{
                     opacity:0
-                }
+                },
+                director:'',
+                actors:''
             }
         },
         mounted(){
@@ -76,6 +105,7 @@
                     let data=await getMovieDetailById(290,this.movieId);
                     this.movieDetail=data.data.data;
                     this.getMovieType();
+                    this.getActorsInfo();
                 }catch(err){
 
                 }
@@ -99,6 +129,11 @@
                 console.log(opacity);
                 this.styleObject.opacity=opacity;
                 
+            },
+            //获取演员及导演信息
+            getActorsInfo(){
+                this.actors=this.movieDetail.basic.actors;
+                this.director=this.movieDetail.basic.director;
             }
         }
     }
@@ -112,6 +147,11 @@
     $box-shadow-gray:-2px -.8px 1px 1.5px gray ;
     // :style="{background:'url('+movieDetail.basic.img+')'+ ' no-repeat 0 0'+'/100% 100%'}"
     div.main{
+        scrollbar-base-color: transparent;
+        scrollbar{
+            width:0;
+        }
+
         position: relative;
         padding:0;
         margin:0;
@@ -162,9 +202,55 @@
             align-items: center;
             font-size:.6rem;
         }
+        .actor-all{
+            position: absolute;
+            top:.6rem;
+            right:.2rem;              
+        }
         div.movie-all-content{
             position: relative;
             background: white;
+            .DirectorAndActor{
+                overflow: auto;
+                .director-head{
+                    position: relative;
+                    height:1rem;
+                    margin-top:.2rem;
+                    font-size:.6rem;
+                    color:gray;
+                    text-align: left;
+                    div{
+                        display: inline;
+                    }
+                    
+                }
+                .line{
+                    height:3.5rem;
+                    border-left:solid gray .05rem;
+                    margin:.2rem .5rem 0;
+                }
+                .content>div{
+                    margin:.2rem .4rem .4rem;
+                }
+                .content{
+                    display: flex;
+                    color:black;
+                    font-size:.4rem;
+                    justify-content: flex-start;
+                    .director{                      
+                        img{
+                            height:3.5rem;
+                            width:3.5rem;
+                        }
+                    }
+                    .actor{
+                        img{
+                            height:3.5rem;
+                            width:3.5rem;
+                        }
+                    }
+                }
+            }
             .divder{
                 height:$divder-height;
                 background-color: silver;

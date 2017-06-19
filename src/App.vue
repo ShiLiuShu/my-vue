@@ -15,8 +15,14 @@ export default {
 </script>
 
 <style lang="scss">
+//去掉chrome移动端下字体自动变大即font-boosting问题
+*{
+  max-height:1000000px;
+}
 html{
   font-size:62.5%;
+
+  
 }
 
 body{
