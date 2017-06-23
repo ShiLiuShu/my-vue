@@ -1,7 +1,7 @@
 <template>
     <div class="main" >
         <div class="bg">
-            <img :src="movieDetail.basic.img" />
+            <img :src="movieDetail.basic.img" >
         </div>
         <div class="head"></div>
         <div class="fixedHead" :style="styleObject">
@@ -11,7 +11,7 @@
             <div class="rate">7.7</div>
             <div class="movie-float-sample-content">
                 <div class="postImg">
-                    <img :src="movieDetail.basic.img" />
+                    <img :src="movieDetail.basic.img" >
                 </div>
                 <div class="sample-content-text">
                     <div class="content-text-up">
@@ -38,12 +38,12 @@
             <div class="sample-story">
                 <div class="text" :class="{'showSampleStoryAll':showSampleStoryAll}">{{movieDetail.basic.story}}</div>
                 <div class="image" :class="{'sampleStoryAllImage':sampleStoryAllImage}" @click="swapSampleStory()">
-                    <img src="../images/arrow.png" />
+                    <img src="../images/arrow.png" >
                 </div>
             </div>
             <!--阴影分割线-->
             <div class="divder" style="position:relative">
-                <div class="actor-all" style="font-size:.6rem">全部</div>
+                <div class="actor-all" style="font-size:.6rem"><p>全部</p><img src="../images/arrow_right.png" ></div>
             </div>
             <div class="DirectorAndActor">
                 <div class="director-head">
@@ -54,15 +54,15 @@
                 <div class="content">
                     <div class="director">
                         <div class="image">
-                            <img :src="director.img" />
+                            <img :src="director.img" >
                         </div>
                         <div class="nameCn">{{director.name}}</div>
                         <div class="nameEn">{{director.nameEn}}</div>
                     </div>
                     <div class="line"></div>
-                    <div class="actor" v-for="actor in actors">
+                    <div class="actor" v-for="actor in actors" :key="actor.id">
                         <div class="image">
-                            <img :src="actor.img" />
+                            <img :src="actor.img" >
                         </div>
                         <div class="nameCn">{{actor.name}}</div>
                         <div class="nameEn">{{actor.nameEn}}</div>
@@ -71,6 +71,45 @@
                 </div>
             </div>
             <div class="divder"></div>
+            <div class="live">
+                <div class="live-head">
+                    <p>直播</p>
+                    <div><p>{{liveInfo.count}}</p><img src="../images/arrow_right.png"></div>
+                </div>
+                <div class="live-content">
+                    <div class="live-content-image">
+                        <img :src="liveInfo.img" >
+                    </div>
+                    <div class="live-content-text">
+                        <p class="title">{{liveInfo.title}}</p>
+                        <p class="orange">{{liveInfo.playTag}}</p>
+                        <p>{{liveInfo.playNumTag}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="files" >
+                <div class="videos">
+                    <div class="text">
+                        <div>视频</div>
+                        <div style="margin-right:.1rem"><p>{{videos.count}}</p></div>
+                        <div><img src="../images/arrow_right.png"></div>
+                    </div>
+                    <div class="image">
+                        <div class="divd"></div>
+                        <img :src="videos.img">
+                    </div>
+                </div>
+                <div class="pictures">
+                    <div class="text">
+                        <div>图片</div>
+                        <div style="margin-right:.1rem"><p>{{stageImage.count}}</p></div>
+                        <div><img src="../images/arrow_right.png"></div>
+                    </div>
+                    <div class="image">
+                        <img :src="stageImage.list[0].imgUrl">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -89,7 +128,20 @@
                     opacity:0
                 },
                 director:'',
-                actors:''
+                actors:'',
+                live:{},
+                files:{}
+            }
+        },
+        computed:{
+            liveInfo:function(){
+                return this.movieDetail.live||{};
+            },
+            videos:function(){
+                return this.movieDetail.basic.video||{};
+            },
+            stageImage:function(){
+                return this.movieDetail.basic.stageImg||{}
             }
         },
         mounted(){
@@ -106,6 +158,7 @@
                     this.movieDetail=data.data.data;
                     this.getMovieType();
                     this.getActorsInfo();
+                    //this.getLiveInfo();
                 }catch(err){
 
                 }
@@ -126,7 +179,6 @@
             handleScroll(){
                 let y=window.scrollY;
                 let opacity=y/400<=1?y/400:1;
-                console.log(opacity);
                 this.styleObject.opacity=opacity;
                 
             },
@@ -134,6 +186,10 @@
             getActorsInfo(){
                 this.actors=this.movieDetail.basic.actors;
                 this.director=this.movieDetail.basic.director;
+            },
+            //获取直播信息
+            getLiveInfo(){
+                
             }
         }
     }
@@ -180,14 +236,12 @@
             left:0;
             right:0;
             height:3rem;
-            background: darkblue;
+            background: #283853;
             z-index: 99;
             display: flex;
             justify-content: center;
             align-items: center;
-            .name{
-
-            }
+            color:white;
         }
         div.rate{
             position:absolute;
@@ -205,11 +259,150 @@
         .actor-all{
             position: absolute;
             top:.6rem;
-            right:.2rem;              
+            right:.2rem;  
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            img{
+                display: block;
+                margin-left:.1rem;
+                width:.4rem;
+            }            
         }
         div.movie-all-content{
             position: relative;
             background: white;
+
+            .files{
+                display: flex;
+                padding-top:.5rem;
+                justify-content: center;
+                align-items: center;
+                .videos{
+                    flex:0.6;
+                    padding:0 .3rem .2rem .3rem;
+                    .text{
+                        font-size: .4rem;
+                        display: flex;
+                        align-items: center;
+                        div:first-child{
+                            flex-grow: 1;
+                            text-align: left;
+                        }
+                        img{
+                            height:.3rem;
+                        }
+                    }
+                    .image{
+                        margin-top:.2rem;
+                        width:100%;
+                        height:3.5rem;
+                        position: relative;
+                        .divd{
+                            position:absolute;
+                            top:0;
+                            right:-.3rem;
+                            height:3.5rem;
+                            border-left:solid black .01rem;
+                        }
+                        img{
+                            display: block;
+                            width:100%;
+                            height:100%;
+                        }
+                    }
+
+                }
+                
+                .pictures{
+                    flex:0.4;
+                    padding:0 .3rem .2rem .3rem;
+                    .text{
+                        font-size: .4rem;
+                        display: flex;
+                        align-items: center;
+                        div:first-child{
+                            flex-grow: 1;
+                            text-align: left;
+                        }
+                        img{
+                            height:.3rem;
+                        }
+                    }
+                    .image{
+                        margin-top:.2rem;
+                        width:100%;
+                        height:3.5rem;
+                        img{
+                            display: block;
+                            width:100%;
+                            height:100%;
+                        }
+                    }
+                }
+            }
+
+            .live{
+                margin-left:.3rem;
+                height:5rem;
+                .live-head{
+                    height:1.2rem;
+                    padding:0.2rem 0;
+                    text-align: left;
+                    p{
+                        font-size:.6rem;
+                    }
+                    
+                    :first-child{
+                        float: left;
+                    }
+                    div{
+                        float:right;
+                        color:gray;
+                        margin-right:.2rem;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        img{
+                            display: block;
+                            margin-left:.1rem;
+                            width:.25rem;
+                        }
+                    }
+                }
+                .live-content{
+                    display: flex;
+                    padding-bottom:.3rem;
+                    
+                    .live-content-image{
+                        img{
+                            width:5rem;
+                            height:2.5rem;
+                        }
+                        
+                    }
+                    .live-content-text{
+                        margin-left: .3rem;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-around;
+                        p{
+                            margin:0;
+                            padding:0;
+                            font-size: .4rem;
+                            text-align: left;
+                        }
+                        .title{
+                            font-size: .5rem;
+                        }
+                        .orange{
+                            color:orange;
+                        }
+                    }
+                }
+                border-bottom: solid 0.04rem silver;
+            }
+
             .DirectorAndActor{
                 overflow: auto;
                 .director-head{
@@ -237,17 +430,24 @@
                     color:black;
                     font-size:.4rem;
                     justify-content: flex-start;
-                    .director{                      
-                        img{
+                    .director{   
+                        .image{
                             height:3.5rem;
-                            width:3.5rem;
+                            overflow: hidden;
+                            img{
+                                width:3.5rem;
+                            }
                         }
                     }
                     .actor{
-                        img{
+                        .image{
                             height:3.5rem;
-                            width:3.5rem;
+                            overflow: hidden;
+                            img{
+                                width:3.5rem;
+                            }
                         }
+                        
                     }
                 }
             }
