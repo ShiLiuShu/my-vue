@@ -1,27 +1,27 @@
 <template>
-    <div class="main" >
+    <div class="main">
         <div class="bg">
-            <img :src="movieDetail.basic.img" >
+            <img :src="movieBg" >
         </div>
         <div class="head"></div>
         <div class="fixedHead" :style="styleObject">
-            <div class="name">{{movieDetail.basic.name}}</div>
+            <div class="name" v-if="movieDetail.basic">{{movieDetail.basic.name}}</div>
         </div>
-        <div class="movie-all-content">
+        <div class="movie-all-content"  v-if="movieDetail.basic">
             <div class="rate">7.7</div>
             <div class="movie-float-sample-content">
                 <div class="postImg">
-                    <img :src="movieDetail.basic.img" >
+                    <img :src="movieBg" >
                 </div>
                 <div class="sample-content-text">
                     <div class="content-text-up">
-                        <div class="up-cn">{{movieDetail.basic.name}}</div>
-                        <div class="up-en">{{movieDetail.basic.nameEn}}</div>
+                        <div class="up-cn" v-if="movieDetail.basic">{{movieDetail.basic.name}}</div>
+                        <div class="up-en" v-if="movieDetail.basic">{{movieDetail.basic.nameEn}}</div>
                     </div>
                     <div class="content-text-down">
-                        <div class="time">{{movieDetail.basic.mins}}</div>
+                        <div class="time" v-if="movieDetail.basic">{{movieDetail.basic.mins}}</div>
                         <div class="type">{{movieTypeStr}}</div>
-                        <div class="playtime">{{movieDetail.basic.releaseDate}}</div>
+                        <div class="playtime" v-if="movieDetail.basic">{{movieDetail.basic.releaseDate}}</div>
                         <div class="tag">
                             <ul>
                                 <li>中国巨幕</li>
@@ -33,19 +33,19 @@
             </div>
             <div class="blank"></div>
             <!--阴影分割线-->
-            <div class="divder"></div>
+            <div class="divder"  v-if="movieDetail.basic"></div>
             <!--故事简介-->
-            <div class="sample-story">
+            <div class="sample-story" v-if="movieDetail.basic">
                 <div class="text" :class="{'showSampleStoryAll':showSampleStoryAll}">{{movieDetail.basic.story}}</div>
                 <div class="image" :class="{'sampleStoryAllImage':sampleStoryAllImage}" @click="swapSampleStory()">
                     <img src="../images/arrow.png" >
                 </div>
             </div>
             <!--阴影分割线-->
-            <div class="divder" style="position:relative">
+            <div class="divder" style="position:relative"  v-if="movieDetail.basic">
                 <div class="actor-all" style="font-size:.6rem"><p>全部</p><img src="../images/arrow_right.png" ></div>
             </div>
-            <div class="DirectorAndActor">
+            <div class="DirectorAndActor" v-if="movieDetail.basic">
                 <div class="director-head">
                     
                     <div style="margin-left:.5rem">导演</div>
@@ -70,8 +70,8 @@
                     </div>
                 </div>
             </div>
-            <div class="divder"></div>
-            <div class="live">
+            <div class="divder"  v-if="movieDetail.basic"></div>
+            <div class="live" v-if="liveInfo.count">
                 <div class="live-head">
                     <p>直播</p>
                     <div><p>{{liveInfo.count}}</p><img src="../images/arrow_right.png"></div>
@@ -87,7 +87,7 @@
                     </div>
                 </div>
             </div>
-            <div class="files" >
+            <div class="files"  v-if="movieDetail.basic">
                 <div class="videos">
                     <div class="text">
                         <div>视频</div>
@@ -110,12 +110,47 @@
                     </div>
                 </div>
             </div>
+            <div class="divder"  v-if="movieDetail.basic"></div>
+            <div class="related" v-if="relatedInfo.goodsCount">
+                <div class="related-head">
+                    <div class="related-head-item1">
+                        <p>电影周边（{{relatedInfo.goodsCount}}）</p>
+                    </div>
+                    <div class="related-head-item2">
+                        <p>全部</p>
+                    </div>
+                    <div class="related-head-item3"><img src="../images/arrow_right.png"></div>
+                </div>
+                <div class="related-main">
+                    <div class="related-main-item" v-for="item in relatedInfo.goodsList" :key="item.goodsId">
+                        <div class="related-main-item-img">
+                            <img :src="item.image" >
+                        </div>
+                        <div class="related-main-item-title">
+                            <p>{{item.name}}</p>
+                        </div>
+                        <div class="related-main-item-price">
+                            <p>￥{{item.minSalePriceFormat}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="divder" v-if="relatedInfo.goodsCount"></div>
+            <allHead title="短评"></allHead>
+            <div class="miniComment"  v-for="item in commentDetail" :key="item.commentId">
+                <MiniComment :commentDetail="item" ></MiniComment>
+            </div>
+            
         </div>
     </div>
 </template>
 <script> 
-    import {getMovieDetailById} from '../service/getData'
+    import {getMovieDetailById,getMovieCommentInfo} from '../service/getData'
     import router from '../router';
+
+    import allHead from '../components/AllHead'
+    import MiniComment from '../components/MiniComment'
+
     export default{
         data(){
             return{
@@ -130,18 +165,33 @@
                 director:'',
                 actors:'',
                 live:{},
-                files:{}
+                files:{},
+                commentData:{}
             }
         },
+        components:{
+            allHead,
+            MiniComment
+        },
         computed:{
+            movieBg:function(){
+                return this.movieDetail&&this.movieDetail.basic.img||"";
+            },
             liveInfo:function(){
-                return this.movieDetail.live||{};
+                return this.movieDetail&&this.movieDetail.live||{};
             },
             videos:function(){
-                return this.movieDetail.basic.video||{};
+                return this.movieDetail&&this.movieDetail.basic.video||{};
             },
             stageImage:function(){
-                return this.movieDetail.basic.stageImg||{}
+                return this.movieDetail&&this.movieDetail.basic.stageImg||{}
+            },
+            //相关信息
+            relatedInfo:function(){
+                return this.movieDetail&&this.movieDetail.related||{}
+            },
+            commentDetail:function(){
+                return this.commentData.mini&&this.commentData.mini.list||{}
             }
         },
         mounted(){
@@ -158,6 +208,9 @@
                     this.movieDetail=data.data.data;
                     this.getMovieType();
                     this.getActorsInfo();
+                    let commentData=await getMovieCommentInfo(this.movieId);
+                    this.commentData=commentData.data.data;
+                    console.log(this.commentData);
                     //this.getLiveInfo();
                 }catch(err){
 
@@ -190,6 +243,10 @@
             //获取直播信息
             getLiveInfo(){
                 
+            },
+            //获得评论信息
+            getCommentInfo(movieId){
+                getMovieCommentInfo(movieId);
             }
         }
     }
@@ -273,9 +330,58 @@
             position: relative;
             background: white;
 
+            .related{
+                padding:.4rem .2rem;
+                font-size: .4rem;
+                .related-head{
+                    display:flex;
+                    align-items: center;
+                    .related-head-item1{
+                        flex-grow: 1;
+                        text-align: left;
+                    }
+                    .related-head-item2{
+                        
+                    }
+                    .related-head-item3{
+                        margin-left: .1rem;
+                        img{
+                            width: .3rem;
+                            display: block;
+                        }
+                    }
+                }
+                .related-main{
+                    display:flex;
+                    justify-content: space-around;
+                    margin: .5rem 0;
+                    .related-main-item{
+                        display: flex;
+                        flex-direction: column;
+                        font-size:.5rem;
+                        width:3.6rem;
+                        .related-main-item-img{
+                            border:solid silver .02rem;
+                            img{
+                                width:3.5rem;
+                                display: block;
+                            }
+                        }
+                        .related-main-item-title{
+                            
+                        }
+                        .related-main-item-price{
+                            color:orange;
+                            font:bold;
+                        }
+                    }
+                }
+            }
+
             .files{
                 display: flex;
                 padding-top:.5rem;
+                padding-bottom:.5rem;
                 justify-content: center;
                 align-items: center;
                 .videos{
@@ -296,13 +402,13 @@
                     .image{
                         margin-top:.2rem;
                         width:100%;
-                        height:3.5rem;
+                        height:5rem;
                         position: relative;
                         .divd{
                             position:absolute;
                             top:0;
                             right:-.3rem;
-                            height:3.5rem;
+                            height:5rem;
                             border-left:solid black .01rem;
                         }
                         img{
@@ -332,7 +438,7 @@
                     .image{
                         margin-top:.2rem;
                         width:100%;
-                        height:3.5rem;
+                        height:5rem;
                         img{
                             display: block;
                             width:100%;

@@ -66,9 +66,18 @@ var getMovieDetailById=(locationId,movieId)=>{
     });
 }
 
+//根据id获取电影评论信息
+var getMovieCommentInfo=(movieId)=>{
+    return axios.get('/movie/hotComment.api',{
+        params:{
+            movieId
+        }
+    });
+}
+
 
 var getHotMoviesP=(id)=>{
     setpromise(getHotMovies);
 }
 
-export {getSearchBook,getCnodeTopics,getBookById,getHotMovies,getHotMoviesP,getIsSellingMovies,getMovieDetailById}
+export {getSearchBook,getCnodeTopics,getBookById,getHotMovies,getHotMoviesP,getIsSellingMovies,getMovieDetailById,getMovieCommentInfo}
